@@ -70,7 +70,7 @@ def load_data_and_labels(data, M=0, N=0):
             Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, n))
             Y = Y[:, :N]
     else:
-	    Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, n))
+        Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, n))
     return [x_text, Y, m, n]
 
 
