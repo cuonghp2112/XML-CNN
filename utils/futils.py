@@ -155,7 +155,13 @@ def save_load_data(params, save=0):
     x_te = sparse.load_npz(params.data_path + '/x_test.npz')
     y_te = sparse.load_npz(params.data_path + '/y_test.npz')
 
+    # save np.load
+    np_load_old = np.load
+
+    # modify the default parameters of np.load
+    np.load = lambda *a,**k: np_load_old(*a, allow_pickle=True, **k)
     vocabulary = np.load(params.data_path + '/vocab.npy').item()
+    np.load = np_load_old
     vocabulary_inv = np.load(params.data_path + '/vocab_inv.npy')
     params.X_dim = x_tr.shape[1]
     params.y_dim = y_tr.shape[1]

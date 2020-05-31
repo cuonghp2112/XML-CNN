@@ -5,7 +5,7 @@ from cnn_test import *
 
 def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
         
-    viz = Visdom()
+    # viz = Visdom()
     loss_best = float('Inf')
     bestTotalLoss = float('Inf')
     best_test_acc = 0
@@ -63,16 +63,16 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
             # ------------------------ Propogate loss -----------------------------------
             loss.backward()
             loss = loss.data
-            torch.nn.utils.clip_grad_norm(model.parameters(), params.clip)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), params.clip)
             sm = 0
             sm2=0
             max_grad = 0
             for p in model.parameters():
                 if(p.grad is not None):
-                    max_grad = max(torch.max(p.grad).data[0], max_grad)
+                    max_grad = max(torch.max(p.grad).item(), max_grad)
                     sm += p.grad.view(-1).shape[0]
                     sm2 = p.grad.mean().squeeze()*p.grad.view(-1).shape[0]
-            avg_grad = (sm2/sm).data[0]
+            avg_grad = (sm2/sm).item()
             # optimizer.step()
             if(torch.__version__ == '0.4.0'):
                     torch.nn.utils.clip_grad_norm_(model.parameters(), params.clip)

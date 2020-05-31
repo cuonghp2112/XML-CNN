@@ -66,12 +66,14 @@ def load_data_and_labels(data, M=0, N=0):
         if(N > n):
                #y_te = y_te.resize((np.shape(y_te)[0], np.shape(y_tr)[1]))
             Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, N))
+            return [x_text, Y, m, n]
         elif(N < n):
             Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, n))
             Y = Y[:, :N]
+            return [x_text, Y, m, n]
     else:
         Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, n))
-    return [x_text, Y, m, n]
+        return [x_text, Y, m, n]
 
 
 def build_vocab(sentences, params, vocab_size=50000):
