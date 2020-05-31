@@ -21,7 +21,7 @@ def weights_init(m):
     if(torch.__version__=='0.4.0'):
         torch.nn.init.xavier_uniform_(m)
     else:
-    torch.nn.init.xavier_uniform(m)
+        torch.nn.init.xavier_uniform(m)
 def get_gpu_memory_map(boom, name=False):
     result = subprocess.check_output(
         [
