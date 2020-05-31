@@ -74,7 +74,7 @@ def load_word2vec(params):
     elif params.model_type == 'glove':
         model_name = join(model_dir, 'glove.6B.%dd.txt' % (params.num_features))
         print(model_name)
-	assert(exists(model_name))
+	    assert(exists(model_name))
         print('Loading existing Word2Vec model (Glove.6B.%dd)' % (params.num_features))
 
         # dictionary, where key is word, value is word vectors
