@@ -7,7 +7,7 @@ import pickle
 from collections import Counter
 from nltk.corpus import stopwords
 
-cachedStopWords = stopwords.words("english")
+# cachedStopWords = stopwords.words("english")
 
 
 def clean_str(string):
