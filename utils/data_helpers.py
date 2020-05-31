@@ -54,7 +54,7 @@ def load_data_and_labels(data, M=0, N=0):
     x_text = [s.split(" ") for s in x_text]
     labels = [doc['catgy'] for doc in data]
     row_idx, col_idx, val_idx = [], [], []
-    for i in xrange(len(labels)):
+    for i in range(len(labels)):
         l_list = list(set(labels[i])) # remove duplicate cateories to avoid double count
         for y in l_list:
             row_idx.append(i)
@@ -64,7 +64,7 @@ def load_data_and_labels(data, M=0, N=0):
     n = max(col_idx) + 1
     if(M and N):
         if(N > n):
-       	    #y_te = y_te.resize((np.shape(y_te)[0], np.shape(y_tr)[1]))
+               #y_te = y_te.resize((np.shape(y_te)[0], np.shape(y_tr)[1]))
             Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, N))
         elif(N < n):
             Y = sp.csr_matrix((val_idx, (row_idx, col_idx)), shape=(m, n))

@@ -27,7 +27,7 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
             # model.load_state_dict(new_state_dict)
             # del new_state_dict
             model = load_model(model, params.load_model)
-	   
+       
     if(torch.cuda.is_available()):
         params.dtype_f = torch.cuda.FloatTensor
         params.dtype_i = torch.cuda.LongTensor
@@ -43,7 +43,7 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
         for i in range(0, x_tr.shape[0] - rem, params.mb_size ):
             e_emb = model.embedding_layer.forward(x_tr[i:i+params.mb_size].view(params.mb_size, x_te.shape[1]))
             Y[i:i+params.mb_size,:] = model.classifier(e_emb).data
- 	if(rem):
+        if(rem):
            e_emb = model.embedding_layer.forward(x_tr[-rem:].view(rem, x_te.shape[1]))
            Y[-rem:, :] = model.classifier(e_emb).data   
         loss = log_loss(y_tr, Y)
