@@ -56,16 +56,33 @@ def test_class(x_te, y_te, params, model=None, x_tr=None, y_tr=None, embedding_w
     rem = x_te.shape[0]%params.mb_size
     for i in range(0,x_te.shape[0] - rem,params.mb_size):
         e_emb = model.embedding_layer.forward(x_te[i:i+params.mb_size].view(params.mb_size, x_te.shape[1]))
-        Y2[i:i+params.mb_size,:] = model.classifier(e_emb).data
+        Y2[i:i+params.mb_size,:] = model.classifier(e_emb).cpu().data
 
     if(rem):
         e_emb = model.embedding_layer.forward(x_te[-rem:].view(rem, x_te.shape[1]))
-        Y2[-rem:,:] = model.classifier(e_emb).data
+        Y2[-rem:,:] = model.classifier(e_emb).cpu().data
 
     loss = log_loss(y_te, Y2) # Reverse of pytorch
-    #print("A")
-    prec = precision_k(y_te.todense(), Y2, 5) # Reverse of pytorch
-    print('Test Loss; Precision Scores [1->5] {} {} {} {} {} Cross Entropy {};'.format(prec[0], prec[1], prec[2], prec[3], prec[4],loss))
+    y_pred = np.around(Y2)
+    y_test_l = y_te.toarray()
+    tp = 0
+    fp = 0
+    tn = 0
+    fn = 0
+    for i in range(500):
+        for j in range(12):
+            if y_pred[i][j] == 1.0 and y_test_l[i][j]  == 1:
+                tp +=1
+            elif y_pred[i][j]  == 1.0 and y_test_l[i][j]  == 0:
+                fp +=1
+            elif y_pred[i][j]  == 0. and y_test_l[i][j]  == 0:
+                tn +=1
+            else:
+                fn +=1
+    print("pr:",tp/(tp+fp),"\nrc:",tp/(tp+fn))
+    
+    prec = precision_k(y_te.todense(), Y2, 12) # Reverse of pytorch
+    print('Test Loss; Precision Scores [1->12] {} {} {} {} {} {} {} {} {} {} {} {} Cross Entropy {};'.format(prec[0], prec[1], prec[2], prec[3], prec[4], prec[5], prec[6], prec[7], prec[8], prec[9], prec[10], prec[11],loss))
     
     if(save):
         Y_probabs2 = sparse.csr_matrix(Y2)

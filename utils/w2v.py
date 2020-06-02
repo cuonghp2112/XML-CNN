@@ -1,4 +1,5 @@
 from gensim.models import word2vec
+from gensim.models import KeyedVectors
 from os.path import join, exists, split
 import os
 import numpy as np
@@ -64,12 +65,12 @@ def load_word2vec(params):
 
     model_dir = '../embedding_weights'
 
-    if params.model_type == 'GoogleNews':
-        model_name = join(model_dir, 'GoogleNews-vectors-negative300.bin.gz')
+    if params.model_type == 'baomoi':
+        model_name = join(model_dir, 'baomoi.vn.model.bin')
         assert(params.num_features == 300)
         assert(exists(model_name))
-        print('Loading existing Word2Vec model (GoogleNews-300)')
-        embedding_model = word2vec.Word2Vec.load_word2vec_format(model_name, binary=True)
+        print('Loading existing Word2Vec model (Baomoi-300)')
+        embedding_model = KeyedVectors.load_word2vec_format(model_name, binary=True)
 
     elif params.model_type == 'glove':
         model_name = join(model_dir, 'glove.6B.%dd.txt' % (params.num_features))

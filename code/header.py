@@ -10,6 +10,7 @@ from torch.autograd import Variable
 import sys
 import numpy as np
 sys.path.append('../utils/')
+sys.path.append('../saved_models/')
 sys.path.append('models')
 import data_helpers 
 
@@ -21,7 +22,7 @@ from sklearn.decomposition import PCA
 import scipy.io as sio
 from scipy import sparse
 import argparse
-from visdom import Visdom
+# from visdom import Visdom
 from sklearn.externals import joblib 
 from futils import *
 from loss import loss

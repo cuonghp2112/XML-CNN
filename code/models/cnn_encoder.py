@@ -64,5 +64,5 @@ class cnn_encoder(torch.nn.Module):
         if(self.params.dropouts):
             o = self.drp5(o) 
         o = self.out_layer(o)
-        o = torch.nn.functional.sigmoid(o)
+        o = torch.sigmoid(o)
         return o

@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--zd', dest='Z_dim', type=int, default=100, help='Latent layer dimension')
 parser.add_argument('--mb', dest='mb_size', type=int, default=20, help='Size of minibatch, changing might result in latent layer variance overflow')
 # parser.add_argument('--hd', dest='h_dim', type=int, default=600, help='hidden layer dimension')
-parser.add_argument('--lr', dest='lr', type=int, default=1e-3, help='Learning Rate')
+parser.add_argument('--lr', dest='lr', type=int, default=1e-4, help='Learning Rate')
 parser.add_argument('--p', dest='plot_flg', type=int, default=0, help='1 to plot, 0 to not plot')
 parser.add_argument('--e', dest='num_epochs', type=int, default=100, help='step for displaying loss')
 
@@ -57,6 +57,7 @@ params.data_path = '../datasets/' + params.data_set
 x_tr, x_te, y_tr, y_te, params.vocabulary, params.vocabulary_inv, params = save_load_data(params, save=params.load_data)
 
 params = update_params(params)
+print(len(params.vocabulary_inv))
 # -----------------------  Loss ------------------------------------
 params.loss_fn = torch.nn.BCELoss(size_average=False)
 # -------------------------- Params ---------------------------------------------
@@ -76,3 +77,5 @@ if(params.training):
 
 else:
     test_class(x_te, y_te, params, x_tr=x_tr, y_tr=y_tr, embedding_weights=embedding_weights)
+    # test_class(x_te, y_te, params, embedding_weights=embedding_weights,save=False)
+    # print(params)

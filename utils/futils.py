@@ -51,9 +51,9 @@ def effective_k(k, d):
 
 def load_model(model, name, optimizer=None):
     if(torch.cuda.is_available()):
-        checkpoint = torch.load(name)
+        checkpoint = torch.load(r"C:\Users\Cuong\Desktop\git\XML-CNN\test_models\model_best_test")
     else:
-        checkpoint = torch.load(name, map_location=lambda storage, loc: storage)
+        checkpoint = torch.load(r"C:\Users\Cuong\Desktop\git\XML-CNN\test_models\model_best_test", map_location=lambda storage, loc: storage)
 
     model.load_state_dict(checkpoint['state_dict'])
 

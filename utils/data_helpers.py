@@ -5,7 +5,7 @@ import itertools
 import scipy.sparse as sp
 import pickle
 from collections import Counter
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
 
 # cachedStopWords = stopwords.words("english")
 
@@ -50,7 +50,7 @@ def pad_sentences(sentence_sets, padding_word="<PAD/>", max_length=500):
 
 
 def load_data_and_labels(data, M=0, N=0):
-    x_text = [clean_str(doc['text']) for doc in data]
+    x_text = [doc['text'] for doc in data]
     x_text = [s.split(" ") for s in x_text]
     labels = [doc['catgy'] for doc in data]
     row_idx, col_idx, val_idx = [], [], []
@@ -107,7 +107,7 @@ def load_data(params, max_length=500, vocab_size=50000):
         test[:5] = train[:5]
 
     trn_sents, Y_trn, m, n = load_data_and_labels(train)
-    tst_sents, Y_tst, m, n = load_data_and_labels(test, M=m, N=n)
+    tst_sents, Y_tst, m, n = load_data_and_labels(test)
     sents_padded_sets, params.sequence_length = pad_sentences([trn_sents, tst_sents] , padding_word=params.pad_token, max_length=max_length)
     # tst_sents_padded = pad_sentences(tst_sents, padding_word=params.pad_token, max_length=max_length)
     vocabulary, vocabulary_inv = build_vocab(sents_padded_sets[0] + sents_padded_sets[1], params, vocab_size=vocab_size)

@@ -50,15 +50,15 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
             loss = loss.mean().squeeze()
             # --------------------------------------------------------------------
 
-            totalLoss += loss.data
+            totalLoss += loss.item()
             
             if i % int(num_mb/12) == 0:
-                print('Iter-{}; Loss: {:.4}; best_loss: {:.4}; max_grad: {}:'.format(i, loss.data, loss_best, max_grad))
+                print('Iter-{}; Loss: {:.4}; best_loss: {:.4}; max_grad: {}:'.format(i, loss.item(), loss_best, max_grad))
                 if not os.path.exists('../saved_models/' + params.model_name ):
                     os.makedirs('../saved_models/' + params.model_name)
                 save_model(model, optimizer, epoch, params.model_name + "/model_best_batch")
                 if(loss<loss_best):
-                    loss_best = loss.data
+                    loss_best = loss.item()
 
             # ------------------------ Propogate loss -----------------------------------
             loss.backward()
@@ -73,11 +73,11 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
                     sm += p.grad.view(-1).shape[0]
                     sm2 = p.grad.mean().squeeze()*p.grad.view(-1).shape[0]
             avg_grad = (sm2/sm).item()
-            # optimizer.step()
+            optimizer.step()
             if(torch.__version__ == '0.4.0'):
                     torch.nn.utils.clip_grad_norm_(model.parameters(), params.clip)
             else:
-                    torch.nn.utils.clip_grad_norm(model.parameters(), params.clip)
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), params.clip)
             for p in model.parameters():
                     if(p.grad is not None):
                             p.data.add_(-params.lr, p.grad.data)
@@ -85,18 +85,18 @@ def train(x_tr, y_tr, x_te, y_te, embedding_weights, params):
             optimizer.zero_grad()
 
             # ----------------------------------------------------------------------------
-            if(params.disp_flg):
-                if(iteration==0):
-                    loss_old = loss
-                else:
-                    viz.line(X=np.linspace(iteration-1,iteration,50), Y=np.linspace(loss_old, loss,50), update='append', win=win)
-                    loss_old = loss
-                if(iteration % 100 == 0 ):
-                    win = viz.line(X=np.arange(iteration, iteration + .1), Y=np.arange(0, .1))
-            iteration +=1
+            # if(params.disp_flg):
+            #     if(iteration==0):
+            #         loss_old = loss
+            #     else:
+            #         viz.line(X=np.linspace(iteration-1,iteration,50), Y=np.linspace(loss_old, loss,50), update='append', win=win)
+            #         loss_old = loss
+            #     if(iteration % 100 == 0 ):
+            #         win = viz.line(X=np.arange(iteration, iteration + .1), Y=np.arange(0, .1))
+            # iteration +=1
 
-            if(epoch==0):
-                break
+            # if(epoch==0):
+            #     break
 
         if(totalLoss<bestTotalLoss):
 
